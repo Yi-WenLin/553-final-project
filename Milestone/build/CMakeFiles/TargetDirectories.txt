@@ -1,0 +1,3 @@
+/Users/carollyn/Desktop/EE 553 C++/Milestone/build/CMakeFiles/ImageProcessingApp.dir
+/Users/carollyn/Desktop/EE 553 C++/Milestone/build/CMakeFiles/edit_cache.dir
+/Users/carollyn/Desktop/EE 553 C++/Milestone/build/CMakeFiles/rebuild_cache.dir
