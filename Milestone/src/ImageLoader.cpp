@@ -1,7 +1,8 @@
-/* Author: YiWen Lin, Syed Adnan, Poornima Kakade
+/* Author: YiWen Lin
    Date: 04/05/2025
-   Description: 
-
+   Description: This file provides the definition of the member function of 
+   ImageLoader class.
+   Test path: path = "/Users/carollyn/Desktop/EE 553 C++/Milestone/input/test_img.jpg"
 */
 
 #include "ImageLoader.h"
@@ -19,9 +20,10 @@ void ImageLoader::loadImage(){
     getline(cin, path);
     // path = "/Users/carollyn/Desktop/EE 553 C++/Milestone/input/test_img.jpg";
     image = cv::imread(path, IMREAD_COLOR);
-    if (image.empty()) {
+    if (image.empty()){
         std::cout << "Image load failed." << endl;
-    } else {
+    }
+    else{
         std::cout << "Image loaded successfully." << endl;
     }
 }
@@ -35,16 +37,16 @@ void ImageLoader::showImage(){
     cv::imshow("Processed Image", image);
     std::cout << "Press 'q' or 'ESC' to close the image window." << std::endl;
 
-    // One things need to check with the OS
+    // One thing is need to check with the OS
     // MacOS seems to have some problem when running the show image
     // OpenCV windows crashed but program works well
-    while (true) {
-        int key = cv::waitKey(10);  // wait 10ms and allow UI events
-        if (key == 27 || key == 'q') {  // ESC or 'q'
+    while (true){
+        int key = cv::waitKey(10); // wait 10ms and allow UI events
+        if (key == 27 || key == 'q'){ // ESC or 'q'
             break;
         }
     }
-    cv::destroyAllWindows();  // close all OpenCV windows
+    cv::destroyAllWindows(); // close all OpenCV windows
 }
 
 void ImageLoader::saveImage(){
@@ -52,7 +54,8 @@ void ImageLoader::saveImage(){
     std::cout << "Enter filename to save (without .jpg suffix): ";
     cin.ignore();
     getline(cin, filename);
-    std::string path = "/Users/carollyn/Desktop/EE 553 C++/Milestone/output/" + filename + ".jpg";
+    // std::string path = "/Users/carollyn/Desktop/EE 553 C++/Milestone/output/" + filename + ".jpg";
+    std::string path = filename + ".jpg";
     cv::imwrite(path, image);
 }
 

@@ -1,7 +1,8 @@
-/* Author: YiWen Lin, Syed Adnan, Poornima Kakade
+/* Author: YiWen Lin
    Date: 04/05/2025
-   Description: 
-
+   Description: This file provides the definition of the member function of 
+   Menu class. It prompts the user to enter the option and lead them to different 
+   function or menu.
 */
 
 #include "Menu.h"
@@ -11,7 +12,7 @@ using namespace std;
 
 void Menu::mainMenu(){
     int choice;
-    do {
+    do{
         cout << "\n----- Image Processing Menu -----" << endl;
         cout << "1. Load Image" << endl;
         cout << "2. Apply Artistic Filter" << endl;
@@ -23,7 +24,7 @@ void Menu::mainMenu(){
         cout << "Select option: ";
         cin >> choice;
 
-        switch (choice) {
+        switch(choice){
             case 1:
                 loader.loadImage(); 
                 break;
@@ -55,7 +56,7 @@ void Menu::mainMenu(){
 
 void Menu::filterMenu(){
     int option;
-    do {
+    do{
         cout << "\n----- Artistic Filter Menu -----" << endl;
         cout << "1. Pencil Sketch" << endl;
         cout << "2. Cartoon Sketch" << endl;
