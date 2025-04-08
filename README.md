@@ -1,5 +1,6 @@
 # 553 Final Project - ImageProcessingApp
 Here is the GitHub link of this project: https://github.com/Yi-WenLin/553-final-project
+
 ## Test in milestone
 1. The test image is placed in the `input/` folder. Please use the image path in your local environment while running the program, e.g.:
    
@@ -71,3 +72,4 @@ make
 2. Improve the stability of imshow() on macOS. Add option to preview processed image externally if imshow() fails. (Try on other OS)
 3. Implement FaceProcessor and Inpainter classes.
 4. Implement an Adaptive Font size for date adding, otherwise it  might be too big in a small-sized image.
+5. Cartoon Sketch cannot overlaying with other Pencil sketch due to the channel so far, need to be modified.
