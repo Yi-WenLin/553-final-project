@@ -1,7 +1,7 @@
-/* Author: YiWen Lin, Syed Adnan, Poornima Kakade
+/* Author: YiWen Lin
    Date: 04/05/2025
-   Description: 
-
+   Description: This file provides the definition of the member function of 
+   ArtisticFilter class.
 */
 
 #include "ArtisticFilter.h"
