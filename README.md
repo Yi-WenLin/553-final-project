@@ -1,4 +1,24 @@
 # 553 Final Project - ImageProcessingApp
+Here is the GitHub link of this project: 
+## Test in milestone
+1. The test image is placed in the `input/` folder. Please use the image path in your local environment while running the program, e.g.:
+   ```
+   Enter image path: /Users/Desktop/Milestone/input/test_img.jpg
+   ```
+2.	The output image will be stored in the build/ folder.
+3.	The following functions are available in this milestone:
+   ```
+	 • Load Image
+	 • Apply Artistic Filter
+	 • Show Image (note: may not work successfully on macOS)
+	 • Save Image
+	 • Pencil Sketch
+	 • Cartoon Sketch
+	 • Oil Painting
+	 • Add Date
+	 • Back
+	 • Exit
+   ```
 
 ## Folder Structure
 ```
