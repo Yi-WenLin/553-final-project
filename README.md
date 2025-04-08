@@ -2,11 +2,12 @@
 Here is the GitHub link of this project: https://github.com/Yi-WenLin/553-final-project
 ## Test in milestone
 1. The test image is placed in the `input/` folder. Please use the image path in your local environment while running the program, e.g.:
+   
    ```
    Enter image path: /Users/Desktop/Milestone/input/test_img.jpg
    ```
-2.	The output image will be stored in the build/ folder.
-3.	The following functions are available in this milestone:
+3.	The output image will be stored in the build/ folder.
+4.	The following functions are available in this milestone:
    ```
 	 • Load Image
 	 • Apply Artistic Filter
@@ -69,3 +70,4 @@ make
 1. Add error handling: throw an exception or show a warning if the user tries to apply a filter without uploading an image.
 2. Improve the stability of imshow() on macOS. Add option to preview processed image externally if imshow() fails. (Try on other OS)
 3. Implement FaceProcessor and Inpainter classes.
+4. Implement an Adaptive Font size for date adding, otherwise it  might be too big in a small-sized image.
