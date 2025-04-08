@@ -1,5 +1,5 @@
 # 553 Final Project - ImageProcessingApp
-Here is the GitHub link of this project: 
+Here is the GitHub link of this project: https://github.com/Yi-WenLin/553-final-project
 ## Test in milestone
 1. The test image is placed in the `input/` folder. Please use the image path in your local environment while running the program, e.g.:
    ```
