@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="C:\Users\adnan\Desktop\ImageProcessing\553-final-project\main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\adnan\Desktop\ImageProcessing\553-final-project\src\ArtisticFilter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\adnan\Desktop\ImageProcessing\553-final-project\src\FilteredPhoto.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\adnan\Desktop\ImageProcessing\553-final-project\src\ImageCollager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\adnan\Desktop\ImageProcessing\553-final-project\src\Photo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\adnan\Desktop\ImageProcessing\553-final-project\src\TransferredPhoto.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\adnan\Desktop\ImageProcessing\553-final-project\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{23FF5D07-4DD1-331B-B937-0B39044138B9}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

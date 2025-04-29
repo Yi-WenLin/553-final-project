@@ -1,0 +1,10 @@
+^C:\USERS\ADNAN\DESKTOP\IMAGEPROCESSING\553-FINAL-PROJECT\BUILD\CMAKEFILES\96CE1866134F30E2217109DBDDDB2246\GENERATE.STAMP.RULE
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/adnan/Desktop/ImageProcessing/553-final-project -BC:/Users/adnan/Desktop/ImageProcessing/553-final-project/build --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file C:/Users/adnan/Desktop/ImageProcessing/553-final-project/build/ImageProcessingApp.sln
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
