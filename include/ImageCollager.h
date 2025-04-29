@@ -12,25 +12,33 @@
 #ifndef IMAGECOLLAGER_H
 #define IMAGECOLLAGER_H
 
-#include "ImageLoader.h"
+#include "Photo.h"
 #include <opencv2/opencv.hpp>
-#include <string>
 
-class ImageCollager : public ImageLoader {
+class ImageCollager : public Photo
+{
 private:
-    cv::Mat secondImage;         // second image for collaging
-    std::string secondImagePath; // path of the second image
+    cv::Mat image1;  // The first image (original)
+    cv::Mat image2;  // The second image (filtered or transferred)
 
 public:
-    // Function to load the second image
-    bool loadSecondImage(const std::string& path);
+    ImageCollager();
+    ~ImageCollager();
 
-    // Function to create the collage
-    void createCollage() const;
+    // Loads the first image (original photo)
+    void loadImage(const cv::Mat& img);
 
-    // Getter functions for the second image
-    const cv::Mat& getSecondImage() const;
-    std::string getSecondImagePath() const;
+    // Loads the second image (filtered or transferred photo)
+    void loadSecondImage(const cv::Mat& img);
+
+    // Creates the collage by combining both images
+    void createCollage();
+
+    // Shows the collage using OpenCV
+    void show() const override;
+
+    // Save the collage to a specified path
+    void save(const std::string& path) const override;
 };
 
 #endif // IMAGECOLLAGER_H
