@@ -1,19 +1,26 @@
+/* Author: YiWen Lin
+   Date: 04/27/2025
+   Description: This file is the main control of the system.
+*/
+
 #include "Photo.h"
 #include "FilteredPhoto.h"
 #include "TransferredPhoto.h"
 #include "ArtisticFilter.h"
 #include <iostream>
 #include <map>
+#include <unordered_map>  // for naming
+#include <unordered_set>  // for naming
 #include <string>
 #include <vector>
 #include <algorithm>
 using namespace std;
 
+// Function Declaration
 void filterMenu(string& currentName);
 void mainMenu(string& currentName);
+std::string uniqueNaming(const std::string& checkName, unordered_map<string, int>& baseCounter, unordered_set<string>& usedNames);
 
-
-//SourceName()  sourceName
 int main()
 {
     // map to record all photos name with its ptr - | {{name, Photo object ptr}} | {...} |
@@ -21,6 +28,11 @@ int main()
 
     // Map to track original to derivative photo - | {SourceName, [Names of Derivatives]} | {...} |
     map<string, vector<string>> originToDerivatives;
+
+    // A map that store the count of base name for easy adding - | {base name, count} | {...} |
+    unordered_map<string, int> baseCounter;
+    // A set that store all used name - | {name1} | {name2} |
+    unordered_set<string> usedNames;
     
     //Current selected original photo name
     string currentPhotoName;
@@ -52,6 +64,8 @@ int main()
                 Photo* photo = new Photo();
                 if(photo->load(path))  // bool
                 {
+                    // Name checking
+                    name = uniqueNaming(name, baseCounter, usedNames);
                     photo->setName(name);
                     photo->setOriginal("Original");
                     photo->addTag(tag);
@@ -151,6 +165,7 @@ int main()
                 else
                 {
                     std::cout << "Invalid option. " << std::endl;
+                    break;
                 }
                 break;
             }
@@ -179,6 +194,8 @@ int main()
                 string newName;
                 std::cout << "Please name for the new filtered photo: ";
                 getline(cin, newName);
+                // Name checking
+                newName = uniqueNaming(newName, baseCounter, usedNames);
 
                 // Show Filter Menu
                 filterMenu(currentPhotoName);
@@ -250,6 +267,9 @@ int main()
                 string newName;
                 std::cout << "Please name for the new tranferred photo: ";
                 getline(cin, newName);
+                // Name checking
+                newName = uniqueNaming(newName, baseCounter, usedNames);
+                
 
                 int type;
                 std::cout << "Please choose a Transfer Style:\n 1. Mosaic Art\n 2. Modern Art \nOption: ";
@@ -322,7 +342,7 @@ int main()
                     break;
                 }
                 string path;
-                std::cout << "Enter path to save: ";
+                std::cout << "Please enter path to save (with suffix): ";
                 getline(cin, path);
                 photoMap[currentPhotoName]->save(path);
                 break;
@@ -331,8 +351,9 @@ int main()
             // Delete a Photo
             case 9:{
                 string name;
-                std::cout << "Enter name of photo to delete: ";
+                std::cout << "Enter the name of photo to delete: ";
                 getline(cin, name);
+
                 if(photoMap.count(name))
                 {
                     delete photoMap[name];
@@ -362,9 +383,11 @@ int main()
                     std::cout << "No photo selected. " << std::endl;
                     break;
                 }
+
                 string tag;
                 std::cout << "Enter tag to add: ";
                 getline(cin, tag);
+
                 photoMap[currentPhotoName]->addTag(tag);
                 std::cout << "Tag added.\n";
                 break;
@@ -385,7 +408,7 @@ int main()
         }
     }
 
-    // Destruct
+    // Destructor
     for(auto& [name, ptr] : photoMap)
     {
         delete ptr;
@@ -404,14 +427,15 @@ void filterMenu(std::string& currentName)
 
     std::cout << "\n--------------------------------------------\n";
     std::cout << "|            " << bold << "Filter Menu" << reset << "                   |\n";
-    std::cout << "| Current: " << (currentName.empty() ? "None" : currentName);
-    std::cout << std::string(33 - (currentName.empty() ? 4 : currentName.length()), ' ') << "|\n";
-    std::cout << "|-----------------------------------------|\n";
+    //std::cout << "| Current: " << (currentName.empty() ? "None" : currentName);
+    //std::cout << std::string(33 - (currentName.empty() ? 4 : currentName.length()), ' ') << "|\n";
+    std::cout << "|                                          |\n";
+    std::cout << "|------------------------------------------|\n";
     std::cout << "| " << optionColor << "1. Cartoon Sketch" << reset << "                        |\n";
     std::cout << "| " << optionColor << "2. Oil Painting" << reset << "                          |\n";
     std::cout << "| " << optionColor << "3. Pop Filming" << reset << "                           |\n";
     std::cout << "| " << optionColor << "4. Add Date" << reset << "                              |\n";
-    std::cout << "|                              " << italic << "0. Back" << reset << "     |\n";
+    //std::cout << "|                              " << italic << "0. Back" << reset << "     |\n";
     std::cout << "--------------------------------------------\n";
     std::cout << "Choose a filter option: ";
 }
@@ -421,7 +445,7 @@ void mainMenu(std::string& currentName)
     const std::string bold = "\033[1m";
     const std::string italic = "\033[3m";
     const std::string reset = "\033[0m";
-    const std::string optionColor = "\033[32m"; // cyan - options
+    const std::string optionColor = "\033[32m"; // green
 
     std::cout << "\n--------------------------------------------------------------\n";
     std::cout << "|                  " << bold << "Image Processing System" << reset << "                   |\n";
@@ -441,4 +465,38 @@ void mainMenu(std::string& currentName)
     std::cout << "|                                                " << italic << "0. Exit" << reset << "     |\n";
     std::cout << "--------------------------------------------------------------\n";
     std::cout << "Choose an option: ";
+}
+
+std::string uniqueNaming(const std::string& checkName, unordered_map<string, int>& baseCounter, unordered_set<string>& usedNames)
+{
+    std::string FinalName = checkName;
+
+    if (usedNames.count(checkName))
+    {
+        // Name already exists
+        int idx = baseCounter[checkName] + 1; // start from next index
+
+        while(true)
+        {
+            FinalName = checkName + "" + to_string(idx);
+                
+            // Double check in usedNames
+            if(!usedNames.count(FinalName))
+            {
+                std::cout << "Name is already existed. We will rename it as '" << FinalName << "' " << std::endl;
+                break;
+            }
+            idx++; // add until unique
+        }
+
+        baseCounter[checkName] = idx; // Add to baseName with count idx
+    }
+    // Name does not already exists
+    else
+    {
+        baseCounter[checkName] = 0; // Add to baseName with count 0
+    }
+
+    usedNames.insert(FinalName);  // Add to usedNames
+    return FinalName;
 }

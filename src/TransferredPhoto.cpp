@@ -1,3 +1,12 @@
+/* Author: YiWen Lin
+   Date: 04/27/2025
+   Description: This file provides the defination of the TransferredPhoto class.
+   The menber function will follow the flow/pipeline to get the output once 
+   applying the style transfer.
+   Input -> Preprocess -> Tensor Conversion -> Run in ONNX Inference -> Postprocess -> Output
+   Detailed description of each process are commented above the code.
+*/
+
 #include "Photo.h"
 #include "FilteredPhoto.h"
 #include "TransferredPhoto.h"
@@ -17,38 +26,49 @@ TransferredPhoto::TransferredPhoto(const std::string& path)
     : env(ORT_LOGGING_LEVEL_FATAL, "StyleTransfer"), session(nullptr),
       model_path(path), source(nullptr)
 {
-    // Set up session in onnxruntime
+    // Silence ONNX schema error spam
+    freopen("/dev/null", "w", stderr);
+    // Set up session in onnxruntime for starting
     session_options.SetIntraOpNumThreads(1);;
     session = Ort::Session(env, model_path.c_str(), session_options);
+    freopen("/dev/tty", "w", stderr);
 
-    // Get input shape
+    // Set up session in onnxruntime for starting
+    //session_options.SetIntraOpNumThreads(1);;
+    //session = Ort::Session(env, model_path.c_str(), session_options);
+
+    // Get input tensor type and shape
     Ort::TypeInfo input_type_info = session.GetInputTypeInfo(0);
     auto tensor_info = input_type_info.GetTensorTypeAndShapeInfo();
     input_dims = tensor_info.GetShape();
-
 }
 
 cv::Mat TransferredPhoto::preprocess(const cv::Mat& img, int target_height, int target_width)
 {
     cv::Mat rgb_img, resized, float_img;
 
-    // Convert OpenCV BGR to RGB - Models were trained in RGB
+    // Convert OpenCV BGR to RGB - Models were trained in RGB - otherwise not comparable
     cvtColor(img, rgb_img, COLOR_BGR2RGB);
+
+    // Resizing img to match the model's expected input size
     resize(rgb_img, resized, Size(target_width, target_height));
+    // Normalize pixel values - [0, 255] -> [0.0, 1.0].float
     resized.convertTo(float_img, CV_32F, 1.0 / 255.0);
     return float_img;
 }
 
 std::vector<float> TransferredPhoto::convertToTensor(cv::Mat& img)
 {
+    // Convert the image to tensor - that can apply the trained paramenter in model
+    // 1D-Tensor NCHW layout
     std::vector<float> tensor;
-    for(int c = 0; c < 3; ++c)
+    for(int c = 0; c < 3; ++c)  // Channel
     {
-        for(int i = 0; i < img.rows; ++i)
+        for(int i = 0; i < img.rows; ++i)  // Rows
         {
-            for(int j = 0; j < img.cols; ++j)
+            for(int j = 0; j < img.cols; ++j)  // Columns
             {
-                tensor.push_back(img.at<Vec3f>(i, j)[c]);
+                tensor.push_back(img.at<Vec3f>(i, j)[c]);  // add pixels(i, j) at [0->1->2 channel]
             }
         }
     }
@@ -57,8 +77,9 @@ std::vector<float> TransferredPhoto::convertToTensor(cv::Mat& img)
 
 cv::Mat TransferredPhoto::postprocess(float* data, int height, int width)
 {
-    Mat output(height, width, CV_32FC3);
-    int idx = 0;
+    // Rebuild our image to original channel [0, 255] and BGR mode
+    Mat output(height, width, CV_32FC3); // 3-channel matrix.float
+    int idx = 0; // Tensor index
     float min_val = FLT_MAX;
     float max_val = -FLT_MAX;
 
@@ -74,6 +95,7 @@ cv::Mat TransferredPhoto::postprocess(float* data, int height, int width)
 
                 // Clip to [0,255] directly
                 val = std::min(std::max(val, 0.0f), 255.0f);
+                // Set pixel value back
                 output.at<Vec3f>(i, j)[c] = val;
             }
         }
@@ -124,8 +146,11 @@ cv::Mat TransferredPhoto::postprocess(float* data, int height, int width)
 
 cv::Mat TransferredPhoto::apply(const cv::Mat& input_img)
 {
+    // Pipeline:
+    // Input -> Preprocess -> Tensor Conversion -> Run in ONNX Inference -> Postprocess -> Output
     Ort::AllocatorWithDefaultOptions allocator;
 
+    // Dynamic dimension handler - since our input size is flexible
     bool dynamic_height = input_dims[2] <= 0;
     bool dynamic_width = input_dims[3] <= 0;
     int height = dynamic_height ? input_img.rows : static_cast<int>(input_dims[2]);
@@ -136,25 +161,26 @@ cv::Mat TransferredPhoto::apply(const cv::Mat& input_img)
     // Convert to tensor
     std::vector<float> input_tensor_values = convertToTensor(preprocessed);
 
-    // Set input/output names
+    // Set input/output names dynamically
     Ort::AllocatedStringPtr input_name_ptr = session.GetInputNameAllocated(0, allocator);
     const char* input_name = input_name_ptr.get();
     Ort::AllocatedStringPtr output_name_ptr = session.GetOutputNameAllocated(0, allocator);
     const char* output_name = output_name_ptr.get();
 
-    // Setup input tensor
+    // Setup input Tensor - dimensions(1, 3(channel), height, weight)
     std::array<int64_t, 4> input_shape{1, 3, height, width};
     Ort::MemoryInfo memory_info = Ort::MemoryInfo::CreateCpu(OrtArenaAllocator, OrtMemTypeDefault);
 
     Ort::Value input_tensor = Ort::Value::CreateTensor<float>(memory_info, input_tensor_values.data(), 
     input_tensor_values.size(), input_shape.data(), input_shape.size());
 
-    // Run inference
+    // Run inference -(default running options, single input and single output)
     auto output_tensors = session.Run(Ort::RunOptions{nullptr}, &input_name, &input_tensor, 1, &output_name, 1);
 
+    // Extract the raw output tensor data
     float* output_data = output_tensors.front().GetTensorMutableData<float>();
 
-    // Postprocess image
+    // Postprocess image - as we receive raw output
     return postprocess(output_data, height, width);
 }
 

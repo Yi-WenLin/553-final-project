@@ -1,26 +1,31 @@
 # 553 Final Project - ImageProcessingApp
-Here is the GitHub link of this project: https://github.com/Yi-WenLin/553-final-project
+Here is the GitHub link of this project: 
+https://github.com/Yi-WenLin/553-final-project
 
-## Test in milestone
+## Note
 1. The test image is placed in the `input/` folder. Please use the image path in your local environment while running the program, e.g.:
    
    ```
    Enter image path: /Users/Desktop/Milestone/input/test_img.jpg
    ```
-3.	The output image will be stored in the build/ folder.
-4.	The following functions are available in this milestone:
+2. Before running, please modifying the model path in your local envoronment in case 6 in `main.cpp`. 
+3.	The output image will be stored in the `build/` folder.
+4.	Functions in main Menu:
    ```
-	 • Load Image
+	 • Load Photo
+	 • List Loaded Photos
+	 • Select Current Photo
+	 • Show Current Photo
 	 • Apply Artistic Filter
-	 • Show Image (note: may not work successfully on macOS)
-	 • Save Image
-	 • Pencil Sketch
-	 • Cartoon Sketch
-	 • Oil Painting
-	 • Add Date
-	 • Back
+	 • Apply Style Transfer
+	 • View Metadata
+	 • Save Current Photo
+	 • Delete a Photo
+     • Add Tag
 	 • Exit
    ```
+5. We are using the trained model that provided by (github link - Still finding).
+6. When applying the Style Transfer, it might take few seconds to run. Thanks for patience. I have muted the schema error, hope that works in different environment.
 
 ## Folder Structure
 ```
@@ -29,24 +34,23 @@ ImageProcessingApp/
 ├── build/
 │
 ├── include/
-│   ├── ImageLoader.h
-│   ├── ArtisticFilter.h
-│   ├── [Under Construction] FaceProcessor.h
-│   ├── [Under Construction] Inpainter.h
-│   └── Menu.h
+│   ├── Photo.h
+│   ├── FilteredPhoto.h
+│   ├── TransferredPhoto.h
+│   └── ArtisticFilter.h
 │
 ├── src/
-│   ├── ImageLoader.cpp
-│   ├── ArtisticFilter.cpp
-│   ├── [Under Construction] FaceProcessor.cpp
-│   ├── [Under Construction] Inpainter.cpp
-│   └── Menu.cpp
+│   ├── Photo.cpp
+│   ├── FilteredPhoto.cpp
+│   ├── TransferredPhoto.cpp
+│   └── ArtisticFilter.cpp
 │
 ├── input/
 │   └── test_img.jpg
 │
-├── output/
-│   └── output.jpg
+├── models/
+│   ├── candy.onnx
+│   └── mosaic.onnx
 │
 ├── main.cpp
 ├── CMakeLists.txt
@@ -65,11 +69,3 @@ Cmake ..
 make
 ./ImageProcessingApp
 ```
-
-
-## Some problems need to be solved after the milestone:
-1. Add error handling: throw an exception or show a warning if the user tries to apply a filter without uploading an image.
-2. Improve the stability of imshow() on macOS. Add option to preview processed image externally if imshow() fails. (Try on other OS)
-3. Implement FaceProcessor and Inpainter classes.
-4. Implement an Adaptive Font size for date adding, otherwise it  might be too big in a small-sized image.
-5. Cartoon Sketch cannot overlaying with other Pencil sketch due to the channel so far, need to be modified.

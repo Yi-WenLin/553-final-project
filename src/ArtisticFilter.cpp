@@ -1,3 +1,8 @@
+/* Author: YiWen Lin
+   Date: 04/27/2025
+   Description: This file provides the defination of the ArtisticFilter class.
+*/
+
 #include "ArtisticFilter.h"
 #include <opencv2/imgproc.hpp> //resize, text
 #include <opencv2/photo.hpp>

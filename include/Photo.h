@@ -1,3 +1,10 @@
+/* Author: YiWen Lin
+   Date: 04/27/2025
+   Description: This file creates a base class named Photo for all types of 
+   photos. It stores the basic information and functionalities. It protects 
+   data members to encourage clean inheritance.
+*/
+
 #ifndef PHOTO_H
 #define PHOTO_H
 

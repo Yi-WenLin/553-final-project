@@ -1,3 +1,10 @@
+/* Author: YiWen Lin
+   Date: 04/27/2025
+   Description: This file creates an inherited class named FilteredPhoto
+   that derived class from Photo. It represents a photo after applying 
+   artistic filters like Cartoon Sketch, Oil Painting, etc.
+*/
+
 #ifndef FILTEREDPHOTO_H
 #define FILTEREDPHOTO_H
 

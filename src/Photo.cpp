@@ -1,3 +1,8 @@
+/* Author: YiWen Lin
+   Date: 04/27/2025
+   Description: This file provides the defination of the Photo class.
+*/
+
 #include "Photo.h"
 #include <iostream>
 #include <algorithm> // for std::find

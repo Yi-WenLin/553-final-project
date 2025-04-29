@@ -1,3 +1,10 @@
+/* Author: YiWen Lin
+   Date: 04/27/2025
+   Description: This file creates an inherited class named TransferredPhoto
+   that derived class from Photo. It represents a photo that has been 
+   transformed using a deep learning ONNX model (Style Transfer).
+*/
+
 #ifndef TRANSFERREDPHOTO_H
 #define TRANSFERREDPHOTO_H
 

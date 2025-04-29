@@ -1,3 +1,9 @@
+/* Author: YiWen Lin
+   Date: 04/27/2025
+   Description: This file defines a class named ArtisticFilter for 
+   easier managing all artistic filters when user want to apply them.
+*/
+
 #ifndef ARTISTICFILTER_H
 #define ARTISTICFILTER_H
 
