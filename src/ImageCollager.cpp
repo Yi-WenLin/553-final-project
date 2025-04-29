@@ -39,25 +39,40 @@ void ImageCollager::createCollage() const
         resizedSecondImage = secondImage;
     }
 
-    // Create collage image
+    // Create collage image (side by side)
     cv::Mat collage(image.rows, image.cols * 2, image.type());
 
-    // Copy images side-by-side
+    // Copy images side by side
     image.copyTo(collage(cv::Rect(0, 0, image.cols, image.rows)));
     resizedSecondImage.copyTo(collage(cv::Rect(image.cols, 0, resizedSecondImage.cols, resizedSecondImage.rows)));
 
-    // Show collage
+    // Add text labels: "Original" for the first image, and "Filtered" for the second image
+    cv::putText(collage, "Original", cv::Point(10, 30), cv::FONT_HERSHEY_SIMPLEX, 1, cv::Scalar(0, 0, 255), 2);
+    cv::putText(collage, "Filtered", cv::Point(image.cols + 10, 30), cv::FONT_HERSHEY_SIMPLEX, 1, cv::Scalar(0, 0, 255), 2);
+
+    // Display the collage
     cv::namedWindow("Collage", cv::WINDOW_AUTOSIZE);
     cv::imshow("Collage", collage);
     std::cout << "Press 'q' or 'ESC' to close the collage window." << std::endl;
 
+    // Ask user whether to save the collage
+    std::string savePath;
+    std::cout << "Would you like to save the collage? (y/n): ";
+    char choice;
+    std::cin >> choice;
+
+    if (choice == 'y' || choice == 'Y') {
+        std::cout << "Enter the path to save the collage (e.g., collage.jpg): ";
+        std::cin >> savePath;
+        cv::imwrite(savePath, collage);
+        std::cout << "Collage saved to " << savePath << std::endl;
+    }
+
+    // Wait for user to close the window
     while (true)
     {
         int key = cv::waitKey(10);
-        if (key == 27 || key == 'q') // ESC or 'q'
-        {
-            break;
-        }
+        if (key == 27 || key == 'q') break;  // ESC or 'q' to close
     }
     cv::destroyAllWindows();
 }
