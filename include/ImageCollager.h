@@ -1,3 +1,14 @@
+/*
+   Author: Poornima Kakade 
+   Date: 04/27/2025
+   Description: This header file defines the ImageCollager class, which inherits from the 
+                ImageLoader class. The ImageCollager class is responsible for loading a 
+                second image, creating a collage by combining the original and second images, 
+                and providing getter functions for accessing the second image and its path.
+                It includes function declarations for loading the second image, creating the 
+                collage, and retrieving the second image and its path.
+*/
+
 #ifndef IMAGECOLLAGER_H
 #define IMAGECOLLAGER_H
 
