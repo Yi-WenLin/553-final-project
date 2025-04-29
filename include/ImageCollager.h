@@ -1,28 +1,23 @@
-// Author: Poornima Kakade
-// Date: 04/28/2025
-// Description: Defines the ImageCollager class, inheriting from Photo.
-
 #ifndef IMAGECOLLAGER_H
 #define IMAGECOLLAGER_H
 
-#include "Photo.h"
+#include "ImageLoader.h"
+#include <opencv2/opencv.hpp>
+#include <string>
 
-class ImageCollager : public Photo
-{
+class ImageCollager : public ImageLoader {
 private:
-    cv::Mat secondImage;  // Second image for collage
-    std::string secondImagePath; // Optional: to store second image path
+    cv::Mat secondImage;         // second image for collaging
+    std::string secondImagePath; // path of the second image
 
 public:
-    ImageCollager() = default;
-
-    // Load second image
+    // Function to load the second image
     bool loadSecondImage(const std::string& path);
 
-    // Create collage
+    // Function to create the collage
     void createCollage() const;
 
-    // Accessors
+    // Getter functions for the second image
     const cv::Mat& getSecondImage() const;
     std::string getSecondImagePath() const;
 };
